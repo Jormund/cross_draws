@@ -2,10 +2,10 @@
 // @id             iitc-plugin-cross-draws@Jormund
 // @name           IITC plugin: cross draws
 // @category       Layer
-// @version        1.1.3.20160711.1630
+// @version        1.1.3.20160711.1654
 // @namespace      https://github.com/jonatkins/ingress-intel-total-conversion
 // @downloadURL    https://raw.githubusercontent.com/Jormund/cross_draws/master/cross_draws.user.js
-// @description    [2016-07-11-1630] Checks for planned links that cross other planned links. Requires draw-tools plugin.
+// @description    [2016-07-11-1654] Checks for planned links that cross other planned links. Requires draw-tools plugin.
 // @include        https://www.ingress.com/intel*
 // @include        http://www.ingress.com/intel*
 // @match          https://www.ingress.com/intel*
@@ -160,17 +160,17 @@ function wrapper(plugin_info) {
         var a = polyA.getLatLngs();
         var b = polyB.getLatLngs();
 
-        var endOfA = polyA instanceof L.GeodesicPolygon ? a.length - 1 : a.length; //when polygon, test for the line between last coordinate and first
-        var endOfB = polyB instanceof L.GeodesicPolygon ? b.length - 1 : b.length; //when polygon, test for the line between last coordinate and first
+        var endOfA = polyA instanceof L.GeodesicPolygon ? a.length : a.length - 1; //when polygon, test for the line between last coordinate and first
+        var endOfB = polyB instanceof L.GeodesicPolygon ? b.length : b.length - 1; //when polygon, test for the line between last coordinate and first
 
         for (var i = 0; i < endOfA; ++i) {
-            var a1 = a[j];
+            var a1 = a[i];
             var a2 = (i == a.length - 1) ? a[0] : a[i + 1];
             for (var j = 0; j < endOfB; ++j) {
                 var b1 = b[j];
-                var b2 = i == b.length - 1 ? b[0] : b[j + 1];
+                var b2 = j == b.length - 1 ? b[0] : b[j + 1];
 
-                if (window.plugin.crossDraws.greatCircleArcIntersect(a1, a2, b[i], b[i + 1])) //the actual test
+                if (window.plugin.crossDraws.greatCircleArcIntersect(a1, a2, b1, b2)) //the actual test
                     return true;
             }
         }
@@ -252,52 +252,20 @@ function wrapper(plugin_info) {
     }
 
     window.plugin.crossDraws.testAllPlannedLinksAgainstLayer = function (layer) {
-        if (window.plugin.crossDraws.disabled) return;
-        if (layer instanceof L.GeodesicPolyline) {
-            window.plugin.drawTools.drawnItems.eachLayer(function (layer2) {
-                //if (layer2 instanceof L.GeodesicPolyline) {
-                if (plugin.crossDraws.testPolyIntersect(layer, layer2)) {
-                    plugin.crossDraws.showLink(layer);
-                    plugin.crossDraws.showLink(layer2);
-                }
-                //}
-            });
+        try {
+            if (window.plugin.crossDraws.disabled) return;
+            if (layer instanceof L.GeodesicPolyline) {
+                window.plugin.drawTools.drawnItems.eachLayer(function (layer2) {
+                    if (plugin.crossDraws.testPolyIntersect(layer, layer2)) {
+                        plugin.crossDraws.showLink(layer);
+                        plugin.crossDraws.showLink(layer2);
+                    }
+                });
+            }
+        } catch (err) {
+            alert(err.stack);
         }
-        //        if (layer instanceof L.GeodesicPolygon) {
-        //            window.plugin.drawTools.drawnItems.eachLayer(function (layer2) {
-        //                if (layer2 instanceof L.GeodesicPolyline) {
-        //                    if (plugin.crossDraws.testPolyLine(layer, layer2, true)) {
-        //                        plugin.crossDraws.showLink(layer);
-        //                        plugin.crossDraws.showLink(layer2);
-        //                    }
-        //                }
-        //            }
-        // $.each(window.links, function(guid, link) {
-        // if (!plugin.crossDraws.linkLayerGuids[link.options.guid])
-        // {
-        // if (layer instanceof L.GeodesicPolygon) {
-        // if (plugin.crossDraws.testPolyLine(layer, link,true)) {
-        // plugin.crossDraws.showLink(link);
-        // }
-        // } else if (layer instanceof L.GeodesicPolyline) {
-        // if (plugin.crossDraws.testPolyLine(layer, link)) {
-        // plugin.crossDraws.showLink(link);
-        // }
-        // }
-        // }
-        // });
     }
-
-    // window.plugin.crossDraws.testForDeletedLinks = function () {
-    // window.plugin.crossDraws.linkLayer.eachLayer( function(layer) {
-    // var guid = layer.options.guid;
-    // if (!window.links[guid]) {
-    // console.log("link removed");
-    // plugin.crossDraws.linkLayer.removeLayer(layer);
-    // delete plugin.crossDraws.linkLayerGuids[guid];
-    // }
-    // });
-    // }
 
     window.plugin.crossDraws.createLayer = function () {
         window.plugin.crossDraws.linkLayer = new L.FeatureGroup();
