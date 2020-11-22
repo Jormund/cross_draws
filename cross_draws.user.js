@@ -7,15 +7,14 @@
 // @updateURL      https://raw.githubusercontent.com/Jormund/cross_draws/master/cross_draws.meta.js
 // @downloadURL    https://raw.githubusercontent.com/Jormund/cross_draws/master/cross_draws.user.js
 // @description    [2018-10-31-1930] Checks for planned links that cross other planned links. Requires draw-tools plugin.
-// @include        https://ingress.com/intel*
-// @include        http://ingress.com/intel*
 // @include        https://*.ingress.com/intel*
-// @include        http://*.ingress.com/intel*
+// @include        https://intel.ingress.com/*
+// @match          https://intel.ingress.com/*
 // @match          https://*.ingress.com/intel*
-// @match          http://*.ingress.com/intel*
 // @grant          none
 // ==/UserScript==
 //Changelog
+//1.2.2	Activate on intel.ingress.com
 //1.2.1	Activate on intel.ingress.com, changed download url to github
 //1.2.0 Cross detection from "Cross link fixed" plugin, improves speed (about x2) and detection accross International Date Line
 //1.1.3 Handle https://ingress.com/intel
