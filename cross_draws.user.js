@@ -2,11 +2,11 @@
 // @id             iitc-plugin-cross-draws@Jormund
 // @name           IITC plugin: cross draws
 // @category       Layer
-// @version        1.2.2.20201122.2300
+// @version        1.2.3.20221113.2221
 // @namespace      https://github.com/jonatkins/ingress-intel-total-conversion
 // @updateURL      https://raw.githubusercontent.com/Jormund/cross_draws/master/cross_draws.meta.js
 // @downloadURL    https://raw.githubusercontent.com/Jormund/cross_draws/master/cross_draws.user.js
-// @description    [2020-11-22-2300] Checks for planned links that cross other planned links. Requires draw-tools plugin.
+// @description    [2022-11-13-2221] Checks for planned links that cross other planned links. Requires draw-tools plugin.
 // @include        https://*.ingress.com/intel*
 // @include        https://intel.ingress.com/*
 // @match          https://intel.ingress.com/*
@@ -14,6 +14,7 @@
 // @grant          none
 // ==/UserScript==
 //Changelog
+//1.2.3: Activate on intel-x.ingress.com
 //1.2.2	Activate on intel.ingress.com
 //1.2.1	Activate on intel.ingress.com, changed download url to github
 //1.2.0 Cross detection from "Cross link fixed" plugin, improves speed (about x2) and detection accross International Date Line
